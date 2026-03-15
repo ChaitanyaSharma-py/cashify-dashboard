@@ -71,7 +71,7 @@ COLORS = {
 def load_data():
     
     from pathlib import Path; base = Path(__file__).parent
-    bb_raw = pd.read_excel(base / "Live_Brand_Study_-_CASHIFY_Buyback-_Final_data.xlsx")
+    bb_raw = pd.read_excel(base / "Live_Brand_Study_-_CASHIFY_Buyback_-_Final_data.xlsx")
     rf_raw = pd.read_excel(base / "Live_Brand_Study_-_CASHIFY_-_Refurbished_data.xlsx")
     bb = bb_raw.iloc[1:].copy().reset_index(drop=True)
     rf = rf_raw.iloc[1:].copy().reset_index(drop=True)
