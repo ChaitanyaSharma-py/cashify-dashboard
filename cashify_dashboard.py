@@ -25,7 +25,7 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-  [data-testid="stMetricValue"] { font-size: 2rem; font-weight: 700; }
+  [data-testid="stMetricValue"] { font-size: 1.4rem; font-weight: 700; }
   .section-header {
       background: linear-gradient(90deg, #0B2A3B, #1a4a6b);
       color: white; padding: 10px 18px; border-radius: 6px;
@@ -315,9 +315,9 @@ with tabs[0]:
         consid_bb = bb["Q15_1"].dropna().apply(lambda x: "first choice" in str(x).lower() or "seriously consider" in str(x).lower()).sum()
 
         mc1,mc2,mc3,mc4 = st.columns(4)
-        mc1.metric("TOM Recall", f"{tom_bb/n_bb*100:.1f}%" if n_bb>0 else "—")
-        mc2.metric("Aided Awareness", f"{aided_bb/n_bb*100:.1f}%" if n_bb>0 else "—")
-        mc3.metric("Strong Consideration", f"{consid_bb/n_bb*100:.1f}%" if n_bb>0 else "—")
+        mc1.metric("TOM", f"{tom_bb/n_bb*100:.1f}%" if n_bb>0 else "—")
+        mc2.metric("Aided Aware.", f"{aided_bb/n_bb*100:.1f}%" if n_bb>0 else "—")
+        mc3.metric("Consideration", f"{consid_bb/n_bb*100:.1f}%" if n_bb>0 else "—")
         mc4.metric("NPS", f"{nps_bb}" if nps_bb is not None else "—",
                    delta="Best in category" if nps_bb is not None else None)
 
@@ -329,9 +329,9 @@ with tabs[0]:
         consid_rf = rf["Q15_1"].dropna().apply(lambda x: "first choice" in str(x).lower() or "seriously consider" in str(x).lower()).sum()
 
         mr1,mr2,mr3,mr4 = st.columns(4)
-        mr1.metric("TOM Recall", f"{tom_rf/n_rf*100:.1f}%" if n_rf>0 else "—")
-        mr2.metric("Aided Awareness", f"{aided_rf/n_rf*100:.1f}%" if n_rf>0 else "—")
-        mr3.metric("Strong Consideration", f"{consid_rf/n_rf*100:.1f}%" if n_rf>0 else "—")
+        mr1.metric("TOM", f"{tom_rf/n_rf*100:.1f}%" if n_rf>0 else "—")
+        mr2.metric("Aided Aware.", f"{aided_rf/n_rf*100:.1f}%" if n_rf>0 else "—")
+        mr3.metric("Consideration", f"{consid_rf/n_rf*100:.1f}%" if n_rf>0 else "—")
         mr4.metric("NPS", f"{nps_rf}" if nps_rf is not None else "—",
                    delta="Best in category" if nps_rf is not None else None)
 
