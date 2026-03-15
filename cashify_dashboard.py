@@ -392,9 +392,7 @@ with tabs[0]:
     if rows:
         piv_df = pd.DataFrame(rows)
         st.dataframe(piv_df.style.format({"TOM %":"{:.1f}","Aided Aware %":"{:.1f}",
-                                           "Consideration %":"{:.1f}","NPS":"{:.1f}"})\
-                     .background_gradient(subset=["TOM %","Aided Aware %","Consideration %"], cmap="Greens")\
-                     .background_gradient(subset=["NPS"], cmap="RdYlGn"),
+                                           "Consideration %":"{:.1f}","NPS":"{:.1f}"}),
                      use_container_width=True)
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -460,11 +458,7 @@ with tabs[1]:
 
     with c2:
         st.markdown("##### Awareness Table")
-        st.dataframe(aw_df.set_index("Platform").style
-                     .format("{:.1f}")
-                     .highlight_max(axis=0, color="#d1fae5")
-                     .apply(lambda s: ["background: #e0f7f8; font-weight:700"
-                                       if s.name=="Cashify" else "" for _ in s], axis=1),
+        st.dataframe(aw_df.set_index("Platform").style.format("{:.1f}"),
                      use_container_width=True)
 
     st.markdown("---")
@@ -567,9 +561,7 @@ with tabs[2]:
         fdf["Aware→Famil %"] = (fdf["Familiarity"]/fdf["Awareness"]*100).round(1)
         fdf["Famil→Used %"]  = (fdf["Ever Used"]/fdf["Familiarity"]*100).round(1)
         fdf["Used→Intent %"] = (fdf["Intent to Use"]/fdf["Ever Used"]*100).round(1)
-        st.dataframe(fdf.style.format("{:.1f}")
-                     .highlight_max(axis=0, color="#d1fae5"),
-                     use_container_width=True)
+        st.dataframe(fdf.style.format("{:.1f}"), use_container_width=True)
 
     # Cashify funnel waterfall
     st.markdown("---")
@@ -716,8 +708,7 @@ with tabs[3]:
             st.dataframe(nps_piv.style.format({"Cashify NPS":"{:.1f}",
                                                 "Promoters %":"{:.1f}",
                                                 "Passives %":"{:.1f}",
-                                                "Detractors %":"{:.1f}"})\
-                         .background_gradient(subset=["Cashify NPS"], cmap="RdYlGn"),
+                                                "Detractors %":"{:.1f}"}),
                          use_container_width=True)
         st.markdown("---")
 
@@ -779,7 +770,7 @@ with tabs[4]:
 
     st.markdown("---")
     st.markdown("##### Detailed Source Table")
-    st.dataframe(heat_df.style.background_gradient(cmap="YlGn"), use_container_width=True)
+    st.dataframe(heat_df, use_container_width=True)
 
 # ═════════════════════════════════════════════════════════════════════════════
 # TAB 5 — CONSIDERATION SET
@@ -852,11 +843,7 @@ with tabs[5]:
     # Full consideration table
     st.markdown("---")
     st.markdown("##### Consideration Table")
-    st.dataframe(consid_df.set_index("Platform").style
-                 .format("{:.1f}")
-                 .highlight_max(axis=0, color="#d1fae5")
-                 .apply(lambda s: ["background:#e0f7f8;font-weight:700"
-                                   if s.name=="Cashify" else "" for _ in s], axis=1),
+    st.dataframe(consid_df.set_index("Platform").style.format("{:.1f}"),
                  use_container_width=True)
 
     # Demographic consideration pivot
@@ -1039,8 +1026,7 @@ with tabs[7]:
 
     st.markdown("---")
     st.markdown("##### Barriers Detail Table")
-    st.dataframe(parsed_df.style.format({"Count":"{:,}","% of respondents":"{:.2f}"})\
-                 .background_gradient(subset=["Count"], cmap="Reds"),
+    st.dataframe(parsed_df.style.format({"Count":"{:,}","% of respondents":"{:.2f}"}),
                  use_container_width=True)
 
     # Barrier by demographic
@@ -1210,11 +1196,9 @@ with tabs[8]:
     t1, t2 = st.columns(2)
     with t1:
         st.markdown(f"**Category Drivers — {cat_j}**")
-        st.dataframe(driver_df.style.format({"Count":"{:,}","Pct":"{:.1f}"})\
-                     .background_gradient(subset=["Pct"], cmap="Greens"),
+        st.dataframe(driver_df.style.format({"Count":"{:,}","Pct":"{:.1f}"}),
                      use_container_width=True)
     with t2:
         st.markdown(f"**Category Fears — {cat_j}**")
-        st.dataframe(fear_df.style.format({"Count":"{:,}","Pct":"{:.1f}"})\
-                     .background_gradient(subset=["Pct"], cmap="Reds"),
+        st.dataframe(fear_df.style.format({"Count":"{:,}","Pct":"{:.1f}"}),
                      use_container_width=True)
