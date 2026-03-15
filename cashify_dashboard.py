@@ -352,7 +352,7 @@ with tabs[0]:
                              text=d["%"].astype(str)+"%")
                 fig.update_layout(height=200, margin=dict(t=10,b=10), showlegend=False,
                                   yaxis_title=None, xaxis_title=None)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
     with dc2:
         st.markdown("###### Refurbished — Demographics")
         tabs_demo2 = st.tabs(["City","Gender","Age","Income","Occupation"])
@@ -365,7 +365,7 @@ with tabs[0]:
                              text=d["%"].astype(str)+"%")
                 fig.update_layout(height=200, margin=dict(t=10,b=10), showlegend=False,
                                   yaxis_title=None, xaxis_title=None)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
     # Pivot table
     st.markdown("---")
@@ -393,7 +393,7 @@ with tabs[0]:
         piv_df = pd.DataFrame(rows)
         st.dataframe(piv_df.style.format({"TOM %":"{:.1f}","Aided Aware %":"{:.1f}",
                                            "Consideration %":"{:.1f}","NPS":"{:.1f}"}),
-                     use_container_width=True)
+                     width='stretch')
 
 # ═════════════════════════════════════════════════════════════════════════════
 # TAB 1 — BRAND AWARENESS FUNNEL
@@ -454,12 +454,12 @@ with tabs[1]:
             yaxis_title="%", height=400, legend_title="Metric",
             plot_bgcolor="white", paper_bgcolor="white",
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
     with c2:
         st.markdown("##### Awareness Table")
         st.dataframe(aw_df.set_index("Platform").style.format("{:.1f}"),
-                     use_container_width=True)
+                     width='stretch')
 
     st.markdown("---")
     st.markdown("##### 📋 Demographic Cut — Aided Awareness")
@@ -485,7 +485,7 @@ with tabs[1]:
                       color_discrete_map=COLORS, barmode="group",
                       title=f"Aided Awareness by {demo_col}")
         fig2.update_layout(height=350, plot_bgcolor="white")
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width='stretch')
         st.dataframe(demo_pivot, use_container_width=True)
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -553,7 +553,7 @@ with tabs[2]:
         fig.update_layout(barmode="group", title=f"Brand Health Funnel — {fj}",
                           yaxis_title="%", height=400, plot_bgcolor="white",
                           legend=dict(orientation="h", y=-0.25))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
     with c2:
         st.markdown("##### Funnel Table (with Conversion Rates)")
@@ -561,7 +561,7 @@ with tabs[2]:
         fdf["Aware→Famil %"] = (fdf["Familiarity"]/fdf["Awareness"]*100).round(1)
         fdf["Famil→Used %"]  = (fdf["Ever Used"]/fdf["Familiarity"]*100).round(1)
         fdf["Used→Intent %"] = (fdf["Intent to Use"]/fdf["Ever Used"]*100).round(1)
-        st.dataframe(fdf.style.format("{:.1f}"), use_container_width=True)
+        st.dataframe(fdf.style.format("{:.1f}"), width='stretch')
 
     # Cashify funnel waterfall
     st.markdown("---")
@@ -571,14 +571,21 @@ with tabs[2]:
         cr = cashify_row.iloc[0]
         stages_w = ["Awareness","Familiarity","Ever Used","Intent to Use"]
         vals_w   = [cr[s] for s in stages_w]
-        fig_w = go.Figure(go.Funnel(
-            y=stages_w, x=vals_w,
-            textinfo="value+percent initial",
-            marker=dict(color=[CASHIFY_COLOR,"#00a89180","#00a89150","#00a89130"]),
-            connector=dict(line=dict(color="royalblue", dash="dot", width=2)),
+        fig_w = go.Figure()
+        bar_colors = [CASHIFY_COLOR, "rgba(0,168,145,0.7)", "rgba(0,168,145,0.45)", "rgba(0,168,145,0.25)"]
+        fig_w.add_trace(go.Bar(
+            x=vals_w, y=stages_w, orientation="h",
+            marker_color=bar_colors,
+            text=[f"{v}%" for v in vals_w],
+            textposition="outside",
         ))
-        fig_w.update_layout(title="Cashify Funnel (% of total sample)", height=350)
-        st.plotly_chart(fig_w, use_container_width=True)
+        fig_w.update_layout(
+            title="Cashify Funnel (% of total sample)",
+            height=350, plot_bgcolor="white",
+            xaxis=dict(range=[0, 100], title="%"),
+            yaxis=dict(autorange="reversed"),
+        )
+        st.plotly_chart(fig_w, width='stretch')
 
     # Demographic funnel slice
     st.markdown("---")
@@ -613,7 +620,7 @@ with tabs[2]:
                         color_discrete_map=COLORS, barmode="group",
                         title=f"{fd_stage} by {fd_col} — {fj}")
         fig_fd.update_layout(height=350, plot_bgcolor="white")
-        st.plotly_chart(fig_fd, use_container_width=True)
+        st.plotly_chart(fig_fd, width='stretch')
 
 # ═════════════════════════════════════════════════════════════════════════════
 # TAB 3 — NPS DASHBOARD
@@ -670,7 +677,7 @@ with tabs[3]:
             fig_nps.add_hline(y=0, line_dash="dash", line_color="black", line_width=1)
             fig_nps.update_layout(title=f"NPS Scores — {label}", height=380,
                                    yaxis_title="NPS", plot_bgcolor="white")
-            st.plotly_chart(fig_nps, use_container_width=True)
+            st.plotly_chart(fig_nps, width='stretch')
 
         with cc2:
             # Stacked bar: P/Pa/D breakdown
@@ -684,7 +691,7 @@ with tabs[3]:
             fig_ppd.update_layout(barmode="stack", title="P / Pa / D Breakdown",
                                    height=380, plot_bgcolor="white",
                                    legend=dict(orientation="h",y=-0.3))
-            st.plotly_chart(fig_ppd, use_container_width=True)
+            st.plotly_chart(fig_ppd, width='stretch')
 
         # NPS pivot by demographic
         st.markdown(f"##### {label} — NPS by Demographic")
@@ -704,12 +711,12 @@ with tabs[3]:
                             title=f"Cashify NPS by {nps_demo} — {label}")
             fig_n2.add_hline(y=0, line_dash="dash", line_color="red")
             fig_n2.update_layout(height=320, plot_bgcolor="white")
-            st.plotly_chart(fig_n2, use_container_width=True)
+            st.plotly_chart(fig_n2, width='stretch')
             st.dataframe(nps_piv.style.format({"Cashify NPS":"{:.1f}",
                                                 "Promoters %":"{:.1f}",
                                                 "Passives %":"{:.1f}",
                                                 "Detractors %":"{:.1f}"}),
-                         use_container_width=True)
+                         width='stretch')
         st.markdown("---")
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -741,7 +748,7 @@ with tabs[4]:
                              color_continuous_scale="Teal",
                              title=f"Awareness Source × Platform — {sj} (Counts)")
         fig_heat.update_layout(height=400, coloraxis_showscale=True)
-        st.plotly_chart(fig_heat, use_container_width=True)
+        st.plotly_chart(fig_heat, width='stretch')
 
     with c2:
         st.markdown("##### Heatmap — % of Sample")
@@ -749,7 +756,7 @@ with tabs[4]:
                               color_continuous_scale="Blues",
                               title=f"Awareness Source × Platform — {sj} (%)")
         fig_heat2.update_layout(height=400)
-        st.plotly_chart(fig_heat2, use_container_width=True)
+        st.plotly_chart(fig_heat2, width='stretch')
 
     st.markdown("---")
     st.markdown("##### Overall Top Sources — Combined Across All Platforms")
@@ -766,7 +773,7 @@ with tabs[4]:
                      color_continuous_scale="teal",
                      title=f"Total Awareness Source Mentions — {sj}")
     fig_src.update_layout(height=350, plot_bgcolor="white", coloraxis_showscale=False)
-    st.plotly_chart(fig_src, use_container_width=True)
+    st.plotly_chart(fig_src, width='stretch')
 
     st.markdown("---")
     st.markdown("##### Detailed Source Table")
@@ -820,7 +827,7 @@ with tabs[5]:
         fig_c.add_trace(go.Bar(name="First Choice", x=consid_df["Platform"],
                                y=consid_df["First Choice %"], marker_color=CASHIFY_COLOR))
         fig_c.add_trace(go.Bar(name="Seriously Consider", x=consid_df["Platform"],
-                               y=consid_df["Seriously Consider %"], marker_color="#00a89170"))
+                               y=consid_df["Seriously Consider %"], marker_color="rgba(0,168,145,0.44)"))
         fig_c.add_trace(go.Bar(name="Might Consider", x=consid_df["Platform"],
                                y=consid_df["Might Consider %"], marker_color="#94A3B8"))
         fig_c.add_trace(go.Bar(name="Would NOT", x=consid_df["Platform"],
@@ -828,7 +835,7 @@ with tabs[5]:
         fig_c.update_layout(barmode="stack", title=f"Consideration Set — {cj}",
                             height=400, plot_bgcolor="white",
                             legend=dict(orientation="h", y=-0.3))
-        st.plotly_chart(fig_c, use_container_width=True)
+        st.plotly_chart(fig_c, width='stretch')
 
     with cc2:
         # Strong consideration ranking
@@ -838,13 +845,13 @@ with tabs[5]:
                         color="Platform", color_discrete_map=COLORS,
                         title="Strong Consideration Ranking")
         fig_c2.update_layout(height=400, plot_bgcolor="white", showlegend=False)
-        st.plotly_chart(fig_c2, use_container_width=True)
+        st.plotly_chart(fig_c2, width='stretch')
 
     # Full consideration table
     st.markdown("---")
     st.markdown("##### Consideration Table")
     st.dataframe(consid_df.set_index("Platform").style.format("{:.1f}"),
-                 use_container_width=True)
+                 width='stretch')
 
     # Demographic consideration pivot
     st.markdown("---")
@@ -864,7 +871,7 @@ with tabs[5]:
                          color_discrete_map=COLORS, markers=True,
                          title=f"Strong Consideration by {cdemo} — {cj}")
         fig_cd.update_layout(height=380, plot_bgcolor="white")
-        st.plotly_chart(fig_cd, use_container_width=True)
+        st.plotly_chart(fig_cd, width='stretch')
 
 # ═════════════════════════════════════════════════════════════════════════════
 # TAB 6 — CHOICE DRIVERS
@@ -917,7 +924,7 @@ with tabs[6]:
                         text="Score", color="Score", color_continuous_scale="teal",
                         title="Cashify Choice Drivers")
         fig_d1.update_layout(height=380, plot_bgcolor="white", coloraxis_showscale=False)
-        st.plotly_chart(fig_d1, use_container_width=True)
+        st.plotly_chart(fig_d1, width='stretch')
 
     with c2:
         st.markdown("##### Why Consumers Choose a Competitor (Weighted Score)")
@@ -925,7 +932,7 @@ with tabs[6]:
                         text="Score", color="Score", color_continuous_scale="blues",
                         title="Competitor Choice Drivers")
         fig_d2.update_layout(height=380, plot_bgcolor="white", coloraxis_showscale=False)
-        st.plotly_chart(fig_d2, use_container_width=True)
+        st.plotly_chart(fig_d2, width='stretch')
 
     # Side-by-side comparison on shared drivers
     st.markdown("---")
@@ -941,7 +948,7 @@ with tabs[6]:
         fig_cmp.add_trace(go.Bar(name="Competitor", x=cmp_df["Driver"], y=cmp_df["Competitor"], marker_color="#1B3A5C"))
         fig_cmp.update_layout(barmode="group", title="Driver Comparison — Cashify vs Competitor",
                                height=350, plot_bgcolor="white")
-        st.plotly_chart(fig_cmp, use_container_width=True)
+        st.plotly_chart(fig_cmp, width='stretch')
 
     # Raw tables
     with st.expander("📋 Raw Rank Score Tables"):
@@ -1012,7 +1019,7 @@ with tabs[7]:
                        color_continuous_scale="Reds",
                        title=f"Barriers to Choosing Cashify — {bj}")
         fig_b.update_layout(height=400, plot_bgcolor="white", coloraxis_showscale=False)
-        st.plotly_chart(fig_b, use_container_width=True)
+        st.plotly_chart(fig_b, width='stretch')
 
     with c2:
         # Treemap of barriers
@@ -1022,12 +1029,12 @@ with tabs[7]:
                                   color="Count", color_continuous_scale="Reds",
                                   title="Barrier Treemap")
             fig_tree.update_layout(height=400)
-            st.plotly_chart(fig_tree, use_container_width=True)
+            st.plotly_chart(fig_tree, width='stretch')
 
     st.markdown("---")
     st.markdown("##### Barriers Detail Table")
     st.dataframe(parsed_df.style.format({"Count":"{:,}","% of respondents":"{:.2f}"}),
-                 use_container_width=True)
+                 width='stretch')
 
     # Barrier by demographic
     st.markdown("---")
@@ -1047,7 +1054,7 @@ with tabs[7]:
                             text="%", color_discrete_sequence=["#EF4444"],
                             title=f'Top Barrier "{top_barrier[:40]}…" by {bdemo}')
             fig_bd.update_layout(height=300, plot_bgcolor="white")
-            st.plotly_chart(fig_bd, use_container_width=True)
+            st.plotly_chart(fig_bd, width='stretch')
 
 # ═════════════════════════════════════════════════════════════════════════════
 # TAB 8 — CATEGORY DRIVERS & FEARS
@@ -1130,7 +1137,7 @@ with tabs[8]:
         fig_drv.update_layout(height=420, plot_bgcolor="white",
                                xaxis_title="% of respondents", yaxis_title=None,
                                title=driver_label)
-        st.plotly_chart(fig_drv, use_container_width=True)
+        st.plotly_chart(fig_drv, width='stretch')
 
     with c2:
         st.markdown(f"##### ⚠️ {fear_label}")
@@ -1142,7 +1149,7 @@ with tabs[8]:
         fig_fear.update_layout(height=420, plot_bgcolor="white",
                                 xaxis_title="% of respondents", yaxis_title=None,
                                 title=fear_label)
-        st.plotly_chart(fig_fear, use_container_width=True)
+        st.plotly_chart(fig_fear, width='stretch')
 
     # Q24 Buyback only — Top 3 drivers
     if cat_j == "Buyback":
@@ -1168,7 +1175,7 @@ with tabs[8]:
                          title="Top-3 Selling Platform Drivers (Q24 — multiple check)")
         fig_q24.update_layout(height=350, plot_bgcolor="white",
                                xaxis_tickangle=-30, coloraxis_showscale=False)
-        st.plotly_chart(fig_q24, use_container_width=True)
+        st.plotly_chart(fig_q24, width='stretch')
 
     # Demographic cut for fears
     st.markdown("---")
@@ -1188,7 +1195,7 @@ with tabs[8]:
                              color_discrete_sequence=["#EF4444"],
                              title=f'Top Fear "{top_fear}" by {fdemo}')
             fig_fd2.update_layout(height=300, plot_bgcolor="white")
-            st.plotly_chart(fig_fd2, use_container_width=True)
+            st.plotly_chart(fig_fd2, width='stretch')
 
     # Summary stats
     st.markdown("---")
@@ -1197,8 +1204,8 @@ with tabs[8]:
     with t1:
         st.markdown(f"**Category Drivers — {cat_j}**")
         st.dataframe(driver_df.style.format({"Count":"{:,}","Pct":"{:.1f}"}),
-                     use_container_width=True)
+                     width='stretch')
     with t2:
         st.markdown(f"**Category Fears — {cat_j}**")
         st.dataframe(fear_df.style.format({"Count":"{:,}","Pct":"{:.1f}"}),
-                     use_container_width=True)
+                     width='stretch')
