@@ -71,7 +71,7 @@ COLORS = {
 def load_data():
     
     from pathlib import Path; base = Path(__file__).parent
-    bb_raw = pd.read_excel(base / "Live_Brand_Study_-_CASHIFY_Buyback_-_Final_data.xlsx")
+    bb_raw = pd.read_excel(base / "Live_Brand_Study_-_CASHIFY_Buyback-_Final_data.xlsx")
     rf_raw = pd.read_excel(base / "Live_Brand_Study_-_CASHIFY_-_Refurbished_data.xlsx")
     bb = bb_raw.iloc[1:].copy().reset_index(drop=True)
     rf = rf_raw.iloc[1:].copy().reset_index(drop=True)
@@ -222,8 +222,7 @@ except Exception as e:
 # SIDEBAR — GLOBAL FILTERS
 # ─────────────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Cashify_Logo.png/220px-Cashify_Logo.png",
-             use_container_width=True)
+    st.markdown("### 📱 Cashify")
     st.markdown("---")
     st.markdown("### 🎛️ Global Filters")
 
@@ -332,7 +331,6 @@ with tabs[0]:
     dc1, dc2 = st.columns(2)
     with dc1:
         st.markdown("###### Buyback — Demographics")
-        demo_bb = bb[["City_Tier","Gender","Age","Income","Occupation"]].apply(lambda s: s.value_counts(normalize=True).mul(100).round(1))
         tabs_demo = st.tabs(["City","Gender","Age","Income","Occupation"])
         for i, col_name in enumerate(["City_Tier","Gender","Age","Income","Occupation"]):
             with tabs_demo[i]:
