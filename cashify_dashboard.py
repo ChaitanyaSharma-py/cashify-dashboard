@@ -215,7 +215,7 @@ try:
     data_loaded = True
 except Exception as e:
     data_loaded = False
-    st.error(f"⚠️  Could not load data files. Make sure both Excel files are inside a `data/` subfolder next to cashify_dashboard.py.\n\nError: {e}")
+    st.error(f"⚠️  Could not load data files. Make sure both Excel files are uploaded to the ROOT of your GitHub repository (same level as cashify_dashboard.py).\n\nError: {e}")
     st.stop()
 
 # ─────────────────────────────────────────────────────────────────────────────
