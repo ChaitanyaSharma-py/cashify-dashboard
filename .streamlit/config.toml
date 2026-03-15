@@ -1,0 +1,58 @@
+[server]
+headless = true
+enableCORS = false
+enableXsrfProtection = false
+
+[theme]
+primaryColor = "#008891"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F4F7F6"
+textColor = "#1E293B"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false
+```
+
+**Step 4** — Scroll down → Click **"Commit changes"** → **"Commit changes"** again
+
+---
+
+## Creating the `data/` folder
+
+For the Excel files you can't type-and-create because you're uploading, not creating. Here's the trick:
+
+**Step 1** — Click **"Add file"** → **"Upload files"**
+
+**Step 2** — You'll see a path bar near the top that shows your repo name. Click on it and type `data/` — like this:
+```
+cashify-dashboard / data /
+                    ↑ type this
+```
+
+> If that doesn't work in your browser, use this alternative method below ↓
+
+**Alternative — Create a placeholder file first:**
+1. Click **"Add file"** → **"Create new file"**
+2. Type in the filename box: `data/placeholder.txt`
+3. Type anything in the editor: `data folder`
+4. Click **"Commit changes"**
+5. Now go into the `data/` folder that appeared
+6. Click **"Add file"** → **"Upload files"**
+7. Upload both Excel files here
+8. After uploading, you can delete `placeholder.txt` by clicking it → the trash icon
+
+---
+
+## Final folder structure on GitHub should look like this:
+```
+cashify-dashboard/
+├── 📄 cashify_dashboard.py
+├── 📄 requirements.txt
+├── 📄 README.md
+├── 📄 .gitignore
+├── 📁 .streamlit/
+│   └── 📄 config.toml
+└── 📁 data/
+    ├── 📊 Live_Brand_Study_-_CASHIFY_Buyback_-_Final_data.xlsx
+    └── 📊 Live_Brand_Study_-_CASHIFY_-_Refurbished_data.xlsx
