@@ -69,10 +69,21 @@ COLORS = {
 # ─────────────────────────────────────────────────────────────────────────────
 @st.cache_data
 def load_data():
-    
-    from pathlib import Path; base = Path(__file__).parent
-    bb_raw = pd.read_excel(base / "Live_Brand_Study_-_CASHIFY_Buyback_-_Final_data.xlsx")
-    rf_raw = pd.read_excel(base / "Live_Brand_Study_-_CASHIFY_-_Refurbished_data.xlsx")
+    from pathlib import Path
+    base = Path(__file__).parent
+
+    # Auto-detect buyback file — works regardless of exact filename
+    bb_file = next((f for f in base.glob("*.xlsx") if "uyback" in f.name), None)
+    rf_file = next((f for f in base.glob("*.xlsx") if "efurb" in f.name), None)
+
+    if bb_file is None or rf_file is None:
+        found = [f.name for f in base.glob("*.xlsx")]
+        raise FileNotFoundError(
+            f"Excel files not found in {base}. Files present: {found}"
+        )
+
+    bb_raw = pd.read_excel(bb_file)
+    rf_raw = pd.read_excel(rf_file)
     bb = bb_raw.iloc[1:].copy().reset_index(drop=True)
     rf = rf_raw.iloc[1:].copy().reset_index(drop=True)
 
